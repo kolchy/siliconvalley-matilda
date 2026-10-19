@@ -68,9 +68,14 @@ jobs:
           if ! git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
             echo "Agent pushed no branch."; exit 1
           fi
+          {
+            echo "Closes #$ISSUE"; echo
+            echo "Automated by the issue agent. Plan is in the issue thread."; echo
+            cat "$RUNNER_TEMP/usage.md" 2>/dev/null || true
+          } > "$RUNNER_TEMP/pr-body.md"
           gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$BRANCH" \
             --title "Agent: $ISSUE_TITLE" \
-            --body "Closes #$ISSUE"$'\n\n'"Automated by the issue agent. Plan is in the issue thread."
+            --body-file "$RUNNER_TEMP/pr-body.md"
           gh pr merge "$BRANCH" --repo "$GITHUB_REPOSITORY" --auto --squash --delete-branch
 
       - name: Hand off to a human on failure
