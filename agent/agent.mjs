@@ -54,12 +54,21 @@ ${issue.comments.map((c) => `${c.author?.login}: ${c.body}`).join('\n---\n')}
 </comments>
 </issue>`;
 
-const result = await run({ name: 'issue-agent', instructions }, task, {
-  clientTools,
-  toolHandlers,
-  maxToolRoundtrips: 60,
-});
+let result;
+try {
+  result = await run({ name: 'issue-agent', instructions, purpose: 'code', responseMode: 'deep' }, task, {
+    clientTools,
+    toolHandlers,
+    maxToolRoundtrips: 60,
+  });
+} catch (e) {
+  const detail = (e.errors ?? []).map((x) => `${x.code}: ${x.message}`).join('\n') || String(e.message ?? e);
+  await comment(`Agent run failed before finishing:\n\n\`\`\`\n${detail}\n\`\`\``).catch(() => {});
+  console.error(detail);
+  process.exit(1);
+}
 console.log(result.finalOutput);
+console.log(`Tool calls seen: ${result.events.filter((ev) => ev.type === 'client.tool.requested').length}`);
 
 const stop = async (why) => {
   await comment(`Agent stopped without pushing: ${why}`).catch(() => {});
