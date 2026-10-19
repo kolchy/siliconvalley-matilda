@@ -1,11 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Silicon Yarra</title></head>
-<body>
-Silicon Yarra
-<footer>Last deployed: <span id="last-deployed"></span></footer>
-<script>
-  document.getElementById('last-deployed').textContent = new Date(document.lastModified).toLocaleString();
-</script>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Silicon Yarra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            yarra: {
+              50: '#eef9ff',
+              100: '#dcf3ff',
+              200: '#b3e7ff',
+              300: '#6fd4ff',
+              400: '#23bbff',
+              500: '#009ae6',
+              600: '#0079bd',
+              700: '#006097',
+              800: '#07507c',
+              900: '#0d4266',
+              950: '#082a44'
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <main class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-6 py-16">
+    <p class="text-sm font-semibold uppercase tracking-widest text-yarra-400">Melbourne's tech scene</p>
+    <h1 class="mt-4 text-5xl font-extrabold tracking-tight sm:text-6xl">Silicon Yarra</h1>
+    <p class="mt-6 max-w-xl text-center text-lg text-slate-400">
+      A dark, minimal home for the builders, backers and dreamers along the Yarra.
+    </p>
+    <div class="mt-10 flex gap-4">
+      <a href="#" class="rounded-lg bg-yarra-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-yarra-600/20 transition hover:bg-yarra-500">Get involved</a>
+      <a href="#" class="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white">Learn more</a>
+    </div>
+  </main>
+  <footer class="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
+    Last deployed: <span id="last-deployed" class="text-slate-300"></span>
+  </footer>
+  <script>
+    document.getElementById('last-deployed').textContent = new Date(document.lastModified).toLocaleString();
+  </script>
 </body>
 </html>
