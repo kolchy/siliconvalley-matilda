@@ -1,0 +1,9 @@
+{
+  "name": "issue-agent",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@maincode-ai/matilda-agent-sdk": "latest",
+    "zod": "^3.25.0"
+  }
+}
