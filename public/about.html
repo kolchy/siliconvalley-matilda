@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us | Silicon Yarra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            yarra: {
+              50: '#eef9ff',
+              100: '#dcf3ff',
+              200: '#b3e7ff',
+              300: '#6fd4ff',
+              400: '#23bbff',
+              500: '#009ae6',
+              600: '#0079bd',
+              700: '#006097',
+              800: '#07507c',
+              900: '#0d4266',
+              950: '#082a44'
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <div aria-hidden="true" class="fixed inset-0 -z-10 bg-cover bg-center" style="background-image: url('siliconyarra.png');"></div>
+  <div aria-hidden="true" class="fixed inset-0 -z-10 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90"></div>
+  <nav class="border-b border-slate-800">
+    <div class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+      <a href="index.html" class="text-sm font-semibold uppercase tracking-widest text-yarra-400">Silicon Yarra</a>
+      <div class="flex gap-6 text-sm font-semibold">
+        <a href="index.html" class="text-slate-300 transition hover:text-white">Home</a>
+        <a href="about.html" class="text-white" aria-current="page">About Us</a>
+      </div>
+    </div>
+  </nav>
+  <main class="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6 py-16">
+    <p class="text-sm font-semibold uppercase tracking-widest text-yarra-400">Silicon Yarra</p>
+    <h1 class="mt-4 text-5xl font-extrabold tracking-tight sm:text-6xl">About Us</h1>
+    <div class="mt-8 space-y-6 text-lg text-slate-300">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+        culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+        doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+        veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+      </p>
+    </div>
+    <div class="mt-10">
+      <a href="index.html" class="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white">Back to home</a>
+    </div>
+  </main>
+  <footer class="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
+    Last deployed: <span id="last-deployed" class="text-slate-300"></span>
+  </footer>
+  <script>
+    document.getElementById('last-deployed').textContent = new Date(document.lastModified).toLocaleString();
+  </script>
+</body>
+</html>
