@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><title>Silicon Yarra</title></head>
-<body>Silicon Yarra</body>
+<body>
+Silicon Yarra
+<footer>Last deployed: <span id="last-deployed"></span></footer>
+<script>
+  document.getElementById('last-deployed').textContent = new Date(document.lastModified).toLocaleString();
+</script>
+</body>
 </html>
