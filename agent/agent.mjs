@@ -56,22 +56,31 @@ ${issue.comments.map((c) => `${c.author?.login}: ${c.body}`).join('\n---\n')}
 </issue>`;
 
 const startedAt = Date.now();
+const MAX_ATTEMPTS = 3;
 let result;
-try {
-  result = await run({ name: 'issue-agent', instructions, purpose: 'code', responseMode: 'deep' }, task, {
-    clientTools,
-    toolHandlers,
-    maxToolRoundtrips: 60,
-  });
-} catch (e) {
-  const detail = (e.errors ?? []).map((x) => `${x.code}: ${x.message}`).join('\n') || String(e.message ?? e);
-  await comment(`Agent run failed before finishing:\n\n\`\`\`\n${detail}\n\`\`\``).catch(() => {});
-  console.error(detail);
-  process.exit(1);
+let toolCalls = 0;
+for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+  try {
+    result = await run({ name: 'issue-agent', instructions, purpose: 'code', responseMode: 'deep' }, task, {
+      clientTools,
+      toolHandlers,
+      maxToolRoundtrips: 60,
+    });
+  } catch (e) {
+    const detail = (e.errors ?? []).map((x) => `${x.code}: ${x.message}`).join('\n') || String(e.message ?? e);
+    await comment(`Agent run failed before finishing:\n\n\`\`\`\n${detail}\n\`\`\``).catch(() => {});
+    console.error(detail);
+    process.exit(1);
+  }
+  console.log(result.finalOutput);
+  const calls = result.events.filter((ev) => ev.type === 'client.tool.requested').length;
+  toolCalls += calls;
+  console.log(`Attempt ${attempt}: tool calls seen: ${calls}`);
+  // The model occasionally writes a tool call as plain text that the SDK cannot parse, ending
+  // the run with no work done. Nothing has been changed yet, so starting over is safe.
+  if (calls > 0 || state.planPosted) break;
+  console.warn('Model made no tool calls; retrying.');
 }
-console.log(result.finalOutput);
-const toolCalls = result.events.filter((ev) => ev.type === 'client.tool.requested').length;
-console.log(`Tool calls seen: ${toolCalls}`);
 
 // Usage summary for the PR body. The SDK reports output tokens and context fill only
 // (no input tokens or cost).
