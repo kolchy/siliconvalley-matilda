@@ -22,6 +22,9 @@ env:
   GH_TOKEN: ${{ secrets.AGENT_GH_TOKEN }}
   ISSUE: ${{ github.event.issue.number }}
   BRANCH: agent/issue-${{ github.event.issue.number }}
+  # Untrusted/free-text values go through env vars, never straight into script text.
+  ISSUE_TITLE: ${{ github.event.issue.title }}
+  ACTOR: ${{ github.actor }}
 
 jobs:
   work:
@@ -37,7 +40,7 @@ jobs:
           gh label create needs-human  --repo "$GITHUB_REPOSITORY" --color D93F0B || true
           gh issue edit "$ISSUE" --repo "$GITHUB_REPOSITORY" \
             --remove-label ready --add-label in-progress \
-            --add-assignee "${{ github.actor }}"
+            --add-assignee "$ACTOR"
 
       - uses: actions/checkout@v4
         with:
@@ -66,7 +69,7 @@ jobs:
             echo "Agent pushed no branch."; exit 1
           fi
           gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$BRANCH" \
-            --title "Agent: ${{ github.event.issue.title }}" \
+            --title "Agent: $ISSUE_TITLE" \
             --body "Closes #$ISSUE"$'\n\n'"Automated by the issue agent. Plan is in the issue thread."
           gh pr merge "$BRANCH" --repo "$GITHUB_REPOSITORY" --auto --squash --delete-branch
 
