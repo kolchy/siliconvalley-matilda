@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us | Silicon Yarra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            yarra: {
+              50: '#eef9ff',
+              100: '#dcf3ff',
+              200: '#b3e7ff',
+              300: '#6fd4ff',
+              400: '#23bbff',
+              500: '#009ae6',
+              600: '#0079bd',
+              700: '#006097',
+              800: '#07507c',
+              900: '#0d4266',
+              950: '#082a44'
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <div aria-hidden="true" class="fixed inset-0 -z-10 bg-cover bg-center" style="background-image: url('siliconyarra.png');"></div>
+  <div aria-hidden="true" class="fixed inset-0 -z-10 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90"></div>
+  <nav class="border-b border-slate-800">
+    <div class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+      <a href="index.html" class="text-sm font-semibold uppercase tracking-widest text-yarra-400">Silicon Yarra</a>
+      <div class="flex gap-6 text-sm font-semibold">
+        <a href="index.html" class="text-slate-300 transition hover:text-white">Home</a>
+        <a href="about.html" class="text-white" aria-current="page">About Us</a>
+      </div>
+    </div>
+  </nav>
+  <main class="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6 py-16">
+    <p class="text-sm font-semibold uppercase tracking-widest text-yarra-400">Silicon Yarra</p>
+    <h1 class="mt-4 text-5xl font-extrabold tracking-tight sm:text-6xl">About Us</h1>
+    <div class="mt-8 space-y-6 text-lg text-slate-300">
+      <p>
+        House music was born in Chicago in the early 1980s, when DJs like Frankie Knuckles at the Warehouse club began blending disco, soul and European electronic music with drum machines like the Roland TR-808 and TR-909. The name "house" is widely said to come from the Warehouse itself, where Knuckles' marathon sets defined the sound.
+      </p>
+      <p>
+        By the mid-1980s, Chicago producers such as Marshall Jefferson, Larry Heard (Mr. Fingers) and Jesse Saunders were releasing raw, machine-driven tracks that spread to New York, Detroit and across the Atlantic. In the UK, house music ignited the acid house movement and the rave scene of the late 1980s, soundtracking the "Second Summer of Love" in 1988.
+      </p>
+      <p>
+        Since then, house has splintered into countless subgenres, from deep house and tech house to acid, progressive and electro, and its four-on-the-floor pulse now underpins much of modern dance and pop music. What started in a Chicago club has become one of the most influential sounds in the world.
+      </p>
+    </div>
+    <div class="mt-10">
+      <a href="index.html" class="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white">Back to home</a>
+    </div>
+  </main>
+  <footer class="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
+    Last deployed: <span id="last-deployed" class="text-slate-300"></span>
+  </footer>
+  <script>
+    document.getElementById('last-deployed').textContent = new Date(document.lastModified).toLocaleString();
+  </script>
+</body>
+</html>
