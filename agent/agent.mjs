@@ -5,6 +5,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { run, configureClient } from '@maincode-ai/matilda-agent-sdk';
 import { makeTools, runAllowed } from './tools.mjs';
 
@@ -54,6 +55,7 @@ ${issue.comments.map((c) => `${c.author?.login}: ${c.body}`).join('\n---\n')}
 </comments>
 </issue>`;
 
+const startedAt = Date.now();
 let result;
 try {
   result = await run({ name: 'issue-agent', instructions, purpose: 'code', responseMode: 'deep' }, task, {
@@ -68,7 +70,21 @@ try {
   process.exit(1);
 }
 console.log(result.finalOutput);
-console.log(`Tool calls seen: ${result.events.filter((ev) => ev.type === 'client.tool.requested').length}`);
+const toolCalls = result.events.filter((ev) => ev.type === 'client.tool.requested').length;
+console.log(`Tool calls seen: ${toolCalls}`);
+
+// Usage summary for the PR body. The SDK reports output tokens and context fill only
+// (no input tokens or cost).
+const u = result.usage ?? {};
+const rows = [
+  ['Output tokens', u.output_tokens != null ? u.output_tokens.toLocaleString('en-US') : 'not reported'],
+  ['Peak context used', u.context_pct != null ? `${u.context_pct}%` : 'not reported'],
+  ['Tool calls', String(toolCalls)],
+  ['Run time', `${Math.round((Date.now() - startedAt) / 1000)}s`],
+];
+const usageMd = `### Agent usage\n\n| Metric | Value |\n|---|---|\n${rows.map(([k, v]) => `| ${k} | ${v} |`).join('\n')}\n`;
+await fs.writeFile(path.join(process.env.RUNNER_TEMP ?? os.tmpdir(), 'usage.md'), usageMd);
+if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, usageMd);
 
 const stop = async (why) => {
   await comment(`Agent stopped without pushing: ${why}`).catch(() => {});
